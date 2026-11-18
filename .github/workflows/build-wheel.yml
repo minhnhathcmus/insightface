@@ -6,18 +6,34 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false              # một job lỗi không kéo theo hủy các job khác
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-24.04]          # pin cụ thể, không dùng ubuntu-latest
         python: ["3.10", "3.11", "3.14"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - run: pip install build cython numpy
       - run: python -m build --wheel
         working-directory: python-package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.os }}-py${{ matrix.python }}
+          path: python-package/dist/*.whl
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write               # cấp quyền tạo Release, chỉ cho job này
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
       - uses: softprops/action-gh-release@v2
         with:
-          files: python-package/dist/*.whl
+          files: dist/*.whl

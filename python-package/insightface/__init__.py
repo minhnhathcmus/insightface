@@ -30,7 +30,7 @@ except ImportError as exc:
         f"compatible. Original error: {exc}"
     ) from exc
 
-__version__ = '2.1+custom.3'
+__version__ = '2.1+custom.4'
 
 from . import model_zoo
 from . import utils
