@@ -1,0 +1,23 @@
+name: build-wheel
+on:
+  push:
+    tags: ["v*-custom*"]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.10", "3.11", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install build cython numpy
+      - run: python -m build --wheel
+        working-directory: python-package
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: python-package/dist/*.whl
