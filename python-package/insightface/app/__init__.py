@@ -1,4 +1,5 @@
 from .face_analysis import *
+from .person_analysis import _iou, PersonAnalysis, MatchResult
 try:
     import os
 
@@ -10,8 +11,8 @@ except ImportError:
     pass
 
 
-def __getattr__(name):
-    if name == "PersonAnalysis":
-        from .person_analysis import PersonAnalysis
-        return PersonAnalysis
-    raise AttributeError(name)
+# def __getattr__(name):
+#     if name == "PersonAnalysis":
+#         from .person_analysis import PersonAnalysis
+#         return PersonAnalysis
+#     raise AttributeError(name)

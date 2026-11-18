@@ -40,6 +40,8 @@ from .package_manifest import (
     verify_model_artifact,
 )
 from ..utils import download_onnx
+from .person_package import ensure_person_package, create_session
+
 
 __all__ = ["get_model"]
 

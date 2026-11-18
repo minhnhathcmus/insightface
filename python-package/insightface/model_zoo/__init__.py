@@ -1,4 +1,4 @@
-from .model_zoo import get_model
+from .model_zoo import get_model, _configure_image_preprocessing
 from .onnxruntime_utils import (
     DEFAULT_PROVIDER_PRIORITY,
     get_default_providers,
@@ -27,6 +27,7 @@ from .package_manifest import (
     normalize_preprocessing,
     verify_model_artifact,
 )
+from .model_zoo import ensure_person_package, create_session
 
 __all__ = [
     "get_model",
